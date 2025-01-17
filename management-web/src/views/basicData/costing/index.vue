@@ -159,7 +159,6 @@
 import headerTitle from '@/components/Title/index.vue'
 import { saveCosting as apiSaveCosting } from '@/api/basicData/costing'
 import { getCostList } from '@/api/basicData/costing'
-import { formatDate } from '@/mixins/index'
 
 export default {
   components: {
@@ -168,8 +167,6 @@ export default {
   data() {
     return {
       form: {
-        createBy: '',
-        createTime: formatDate(new Date()),
         manageCostList: [], // 管理成本列表
         remark: '' // 备注
       },
@@ -207,9 +204,6 @@ export default {
             const firstData = productData[0]
 
             // 更新表单公共信息
-            this.form.createBy = firstData.createBy || ''
-            this.form.createTime =
-              firstData.createTime || formatDate(new Date())
             this.form.remark = firstData.remark || ''
 
             // 更新管理成本列表
@@ -277,8 +271,6 @@ export default {
     async saveCosting() {
       this.loading = true
       const params = {
-        createBy: this.form.createBy,
-        createTime: this.form.createTime,
         manageCostList: this.items.map((item) => ({
           type: item.type,
           insiderDays: this.form[item.type + '_1'] || 0,

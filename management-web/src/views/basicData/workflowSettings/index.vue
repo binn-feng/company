@@ -1,7 +1,7 @@
 <template>
   <div class="sales-settings">
     <header-title :need-border="false">
-      <template slot="title"> 工作流设置 </template>
+      <template slot="title"> 邮件模板 </template>
     </header-title>
     <div class="content">
       <el-tabs v-model="activeTab" type="border-card">
@@ -16,8 +16,8 @@
           </div> -->
           <el-form v-if="formData[index]" ref="addUserRuleForm" :model="formData[index]" label-width="70px" class="ruleForm" :border="true">
             <el-form-item label="发送至" prop="senderInfo">
-              <el-tag v-if="index === 0" effect="light">{所属售前}</el-tag>
-              <el-tag v-if="index === 1 || index === 3 || index === 5" effect="light">{所属销售}</el-tag>
+              <el-tag v-if="index === 0 || index === 2" effect="light">{所属售前}</el-tag>
+              <el-tag v-if="index === 1 || index === 4 || index === 6" effect="light">{所属销售}</el-tag>
               <el-tag
                 v-for="(item, itemIndex) in formData[index].senderInfo"
                 :key="item.nickName"
@@ -31,7 +31,8 @@
               <el-button class="button-new-tag" size="small" type="primary" @click="handleSelectUser(formData[index].senderInfo, 0)">+ 添加</el-button>
             </el-form-item>
             <el-form-item label="抄送至" prop="carbonCopyInfo">
-              <el-tag v-if="index === 0 || index === 2 || index === 4" effect="light">{所属销售}</el-tag>
+              <el-tag v-if="index === 7 || index === 8 || index === 9" effect="light">{对应售前}</el-tag>
+              <el-tag v-if="index === 0 || index === 2 || index === 3 || index === 5 || index === 7 || index === 8 || index === 9" effect="light">{所属销售}</el-tag>
               <el-tag
                 v-for="(item, itemIndex) in formData[index].carbonCopyInfo"
                 :key="item.nickName"
@@ -61,6 +62,7 @@
                 placeholder="请输入邮件模板"
                 maxlength="400"
                 @focus="setCurrentInput('emailTemplate')"
+                @input="validateTemplateContent(index)"
               />
               <span>主题/模板支持关键字：</span>
               <el-button
@@ -125,11 +127,14 @@ export default {
       WorkflowTabs: [
         { label: '需成本报价', type: 'NEED_COST_QUOTATION' },
         { label: '已完成成本报价', type: 'COMPLETE_COST_QUOTATION' },
+        { label: '待更新成本报价', type: 'PENDING_COST_QUOTATION_UPDATE' },
         { label: '报价审批', type: 'QUOTATION_APPROVAL' },
         { label: '报价审批结果通知', type: 'QUOTATION_APPROVAL_RESULT_NOTIFICATION' },
         { label: '签约申请', type: 'SIGNING_APPLICATION' },
         { label: '签约审批结果通知', type: 'SIGNING_APPROVAL_RESULT_NOTIFICATION' },
-        { label: '丢单通知', type: 'LOSS_NOTIFICATION' }
+        { label: '销售报价丢单通知', type: 'SALES_QUOTATION_LOSS_NOTIFICATION' },
+        { label: '报价签约丢单通知', type: 'QUOTATION_SIGNING_LOSS_NOTIFICATION' },
+        { label: '丢单信息汇总', type: 'WEEKLY_SCHEDULED_NOTIFICATION' }
       ],
       userDetail: [],
       defaultFormData: currentFormData,
@@ -139,19 +144,45 @@ export default {
       canSelectList: [
         { labels: ['{商机主题}', '{日期}', '{报价系统链接}'] },
         { labels: ['{售前部门}', '{商机主题}', '{报价类型}', '{版本号}', '{日期}', '{成本总额}', '{报价系统链接}'] },
+        { labels: ['{商机主题}', '{日期}', '{所属销售}', '{重新报价说明}', '{报价系统链接}'] },
         { labels: ['{商机主题}', '{日期}', '{所属销售}', '{所属售前}', '{成本总额}', '{销售对外报价}', '{项目报价利润率}', '{继续跟进原因}', '{报价系统链接}'] },
         { labels: ['{商机主题}', '{销售报价审批结果}', '{日期}', '{成本总额}', '{销售对外报价}', '{项目报价利润率}', '{报价系统链接}'] },
         { labels: ['{商机主题}', '{日期}', '{所属销售}', '{所属售前}', '{成本总额}', '{北光合同总金额}', '{北光合同金额不含硬件部分}', '{总成本利润率}', '{成本利润率}', '{继续签约原因}', '{报价系统链接}', '{签约申请详情图片}'] },
         { labels: ['{商机主题}', '{日期}', '{签约申请审批结果}', '{成本总额}', '{销售对外报价}', '{项目利润率}', '{报价系统链接}'] },
-        { labels: ['{商机主题}', '{日期}', '{所属销售}', '{所属售前}', '{成本总额}', '{销售对外报价}', '{项目报价利润率}', '{项目签约利润率}', '{报价申请结果}', '{申请签约金额}', '{签约申请审批结果}', '{丢单原因}', '{报价系统链接}'] }
+        { labels: ['{商机主题}', '{日期}', '{所属销售}', '{所属售前}', '{无法、粗略、详细}', '{成本总额}', '{销售对外报价}', '{项目报价利润率}', '{丢单理由}', '{报价系统链接}'] },
+        { labels: ['{商机主题}', '{日期}', '{所属销售}', '{所属售前}', '{无法、粗略、详细}', '{成本总额}', '{销售对外报价}', '{项目报价利润率}', '{报价申请结果}', '{申请签约金额}', '{项目签约利润率}', '{签约申请审批结果}', '{丢单原因}', '{报价系统链接}'] },
+        { labels: ['{时间周期}', '{管理系统链接}'] }
       ],
-      currentInput: ''
+      currentInput: '',
+      templateError: false
     }
   },
   created() {
     this.initFormData()
   },
   methods: {
+    // 检查模板内容是否包含样式标签
+    validateTemplateContent(index) {
+      const template = this.formData[index].emailTemplate
+      this.templateError = false
+      const regex = /\{([^}]+)\}/g
+      let match
+
+      // 遍历所有匹配到的模板变量
+      while ((match = regex.exec(template)) !== null) {
+        const variableContent = match[1] // 获取花括号内的内容
+
+        // 检查花括号内容是否包含 HTML 标签
+        if (/<[^>]+>/.test(variableContent)) {
+          this.templateError = true
+          break
+        }
+      }
+      if (this.templateError) {
+        this.templateError = true
+        this.$message.error('单个模板关键字样式必须一致，请仔细检查模板内容')
+      }
+    },
     async initFormData() {
       try {
         const res = await getWorkflow({ pageSize: 9999, pageNum: 1 })
@@ -214,7 +245,6 @@ export default {
       if (isEmpty) {
         return this.$message.error('请完善信息之后再次提交')
       }
-      this.loading = true
       const updatedList = this.formData.map(item => {
         return {
           ...item,
@@ -224,6 +254,13 @@ export default {
             .trim()
         }
       })
+      this.formData.forEach((m, index) => {
+        this.validateTemplateContent(index)
+        if (this.templateError) {
+          throw new Error()
+        }
+      })
+      this.loading = true
       try {
         const res = await saveWorkflow(updatedList)
         if (res.code === 200) {
@@ -253,6 +290,7 @@ export default {
       // 设置当前输入框类型
       this.currentInput = inputType
     },
+
     insertText(item) {
       if (this.currentInput === 'emailSubject') {
         this.formData[this.activeTab].emailSubject += item

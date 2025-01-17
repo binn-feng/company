@@ -5,7 +5,8 @@
         </header-title>
         <el-form size="small" :inline="true">
             <el-form-item>
-                <el-input v-model.trim="queryParams.model.query" placeholder="请输入" clearable size="small" style="width: 240px" />
+                <el-input v-model.trim="queryParams.model.query" placeholder="请输入" clearable size="small"
+                    style="width: 240px" />
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" size="small" @click="handleQuery">搜索</el-button>
@@ -76,21 +77,21 @@ export default {
     },
     methods: {
         getContractTypeLabel(contractType) {
-        switch (contractType) {
-            case 1:
-                return '欣象代理';
-            case 2:
-                return '北光直签';
-            default:
-                return '-';
-        }
-    },
+            switch (contractType) {
+                case 1:
+                    return '欣象代理';
+                case 2:
+                    return '北光直签';
+                default:
+                    return '-';
+            }
+        },
         formatProfitRate(rate) {
             if (rate === null || rate === undefined) {
                 return '-'; // 处理空值
             }
             return `${(rate * 100).toFixed(2)}%`; // 将利润率转换为百分比格式，保留两位小数
-        } ,
+        },
         getList() {
             this.loading = true
             fetchOpportunities('listWithLose', this.queryParams).then(response => {

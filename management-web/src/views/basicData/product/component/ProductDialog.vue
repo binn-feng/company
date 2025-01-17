@@ -214,8 +214,6 @@ export default {
       const value = parseFloat(this.currentProduct[prop])
       if (!isNaN(value)) {
         this.currentProduct[prop] = value.toFixed(2)
-      } else {
-        this.currentProduct[prop] = '0.00'
       }
     },
 

@@ -223,8 +223,6 @@ export default {
         } else {
           this.currentProcurement[prop] = value.toFixed(8)
         }
-      } else {
-        this.currentProcurement[prop] = '0.00'
       }
     },
 

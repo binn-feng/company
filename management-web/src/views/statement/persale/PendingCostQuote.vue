@@ -5,7 +5,8 @@
         </header-title>
         <el-form size="small" :inline="true">
             <el-form-item>
-                <el-input v-model.trim="queryParams.model.query" placeholder="请输入" clearable size="small" style="width: 240px" />
+                <el-input v-model.trim="queryParams.model.query" placeholder="请输入" clearable size="small"
+                    style="width: 240px" />
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" size="small" @click="handleQuery">搜索</el-button>
@@ -27,10 +28,47 @@
             <el-table-column label="客户名称" prop="customersName" min-width="150" />
             <el-table-column label="所属销售" prop="saleName" min-width="150" />
             <el-table-column label="产品类别" prop="category" min-width="150" />
-            <el-table-column label="报价内容" prop="quoteContent" min-width="300" />
+            <!-- <el-table-column label="报价内容" prop="quoteContent" min-width="300" /> -->
             <el-table-column label="所属售前" prop="preSaleName" min-width="150" />
+            <el-table-column label="操作" align="center" width="160" class-name="small-padding fixed-width">
+                <template slot-scope="scope">
+                    <el-button size="middle" type="text" @click="handleView(scope.row)">商机详情</el-button>
+                </template>
+            </el-table-column>
         </el-table>
+        <el-dialog :visible.sync="dialogVisible" title="商机详情" width="600px">
+            <div class="modal-content">
+                <div class="modal-item">
+                    <span style="width: 15%;">商机名称：</span>
+                    <span style="width: 85%;font-weight: 700;">{{ opportunity.name }}</span>
+                </div>
+                <div class="modal-item">
+                    <span style="width: 15%;">客户名称：</span>
+                    <span style="width: 85%;">{{ opportunity.customersName }}</span>
+                </div>
+                <div class="modal-item">
+                    <span style="width: 15%;">所属销售：</span>
+                    <span style="width: 85%;">{{ opportunity.saleName }}</span>
+                </div>
+                <div class="modal-item">
+                    <span style="width: 15%;">产品类别：</span>
+                    <span style="width: 85%;">{{ opportunity.category }}</span>
+                </div>
+                <div class="modal-item">
+                    <span style="width: 15%;">所属售前：</span>
+                    <span style="width: 85%;">{{ opportunity.preSaleName }}</span>
+                </div>
+                <div class="modal-item" style="display: flex; align-items: flex-start;">
+                    <span style="width: 15%;">商机介绍：</span>
+                    <span style="width: 85%;">{{ opportunity.introduce }}</span>
+                </div>
+            </div>
 
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="handleCancel" type="default">取消</el-button>
+                <el-button v-if="opportunity.status === '1'" @click="handleOk" type="primary">确定</el-button>
+            </div>
+        </el-dialog>
         <div class="footer">
             <el-pagination :total="total" :page-sizes="[10, 20, 30]" :current-page="queryParams.current"
                 :page-size="queryParams.size" layout="total, sizes, prev, pager, next, jumper"
@@ -57,6 +95,8 @@ export default {
             },
             total: 0, // 总条数
             loading: false, // 加载状态
+            dialogVisible: false, // 弹框显示/隐藏控制
+            opportunity: {}, // 当前查看的商机对象
         };
     },
     created() {
@@ -98,6 +138,17 @@ export default {
             // 获取数据
             this.getList();
         },
+        // 查看商机详情
+        handleView(row) {
+            this.opportunity = row; // 设置当前商机数据
+            this.dialogVisible = true; // 显示弹框
+        },
+        handleCancel() {
+            this.dialogVisible = false; // 关闭弹框
+        },
+        handleOk() {
+            this.dialogVisible = false; // 关闭弹框
+        }
     }
 }
 </script>
@@ -105,5 +156,15 @@ export default {
 .footer {
     float: right;
     margin: 30px 0;
+}
+
+.modal-content {
+    padding: 20px;
+}
+
+.modal-item {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
 }
 </style>

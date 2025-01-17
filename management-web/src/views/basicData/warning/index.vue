@@ -73,7 +73,6 @@
 <script>
 import headerTitle from '@/components/Title/index.vue'
 import { saveWarningSettings, getWarningList } from '@/api/basicData/warning'
-import { formatDate } from '@/mixins/index'
 
 export default {
   components: {
@@ -84,11 +83,7 @@ export default {
       form: {
         externalProfit: '', // 对外报价最低利润率
         contractProfit: '', // 合同签约最低利润率
-        createBy: '',
-        updateBy: '',
-        remark: '', // 备注
-        createTime: '',
-        updateTime: ''
+        remark: '' // 备注
       },
       loading: false
     }
@@ -114,11 +109,7 @@ export default {
           if (data) {
             this.form.externalProfit = this.formatDecimal(data.externalProfit) // 格式化为两位小数
             this.form.contractProfit = this.formatDecimal(data.contractProfit) // 格式化为两位小数
-            this.form.createBy = data.createBy || ''
-            this.form.updateBy = data.updateBy || ''
             this.form.remark = data.remark || ''
-            this.form.createTime = data.createTime || ''
-            this.form.updateTime = data.updateTime || ''
           }
         } else {
           this.$message.error(response.message || '加载数据失败，请重试')
@@ -159,10 +150,6 @@ export default {
       const params = {
         contractProfit: parseFloat(this.form.contractProfit) || 0,
         externalProfit: parseFloat(this.form.externalProfit) || 0,
-        createBy: this.form.createBy,
-        createTime: formatDate(new Date()), // 设置为当前时间
-        updateBy: this.form.updateBy,
-        updateTime: formatDate(new Date()), // 设置为当前时间
         remark: this.form.remark,
         id: 0,
         params: {}

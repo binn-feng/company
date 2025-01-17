@@ -84,7 +84,6 @@
 <script>
 import headerTitle from '@/components/Title/index.vue'
 import { saveQuoteSettings, getQuoteList } from '@/api/basicData/qoute'
-import { formatDate } from '@/mixins/index'
 
 export default {
   components: {
@@ -93,9 +92,7 @@ export default {
   data() {
     return {
       form: {
-        remark: '',
-        createBy: '',
-        updateBy: ''
+        remark: ''
       },
       loading: false,
       items: [
@@ -167,17 +164,9 @@ export default {
         managedQuoteList: this.items.map((item) => ({
           dutyRate: parseFloat(this.form[item.label + '_taxRate']) || 0,
           profitability: parseFloat(this.form[item.label + '_profitRate']) || 0,
-          type: item.type,
-          createBy: this.form.createBy,
-          createTime: formatDate(new Date()),
-          updateBy: this.form.updateBy,
-          updateTime: formatDate(new Date())
+          type: item.type
         })),
-        remark: this.form.remark,
-        createBy: this.form.createBy,
-        updateBy: this.form.updateBy,
-        createTime: formatDate(new Date()),
-        updateTime: formatDate(new Date())
+        remark: this.form.remark
       }
 
       try {

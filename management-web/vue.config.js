@@ -31,8 +31,7 @@ module.exports = {
     //     },
     //   },
     // },
-    historyApiFallback: true,
-    // before: require('./mock/mock-server.js')
+    historyApiFallback: true
   },
   configureWebpack: {
     // provide the app's title in webpack's name field, so that

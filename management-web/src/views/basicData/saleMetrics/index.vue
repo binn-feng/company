@@ -14,9 +14,24 @@
           size="small"
           @keyup.enter.native="searchProcurement"
         />
-        <el-button v-hasPermi="['manager:goal:query']" type="primary" class="search-button" size="small" @click="searchProcurement">搜索</el-button>
+        <el-button
+          v-hasPermi="['manager:goal:query']"
+          icon="el-icon-search"
+          type="primary"
+          class="search-button"
+          size="small"
+          @click="searchProcurement"
+        >搜索</el-button>
+        <el-button
+          v-hasPermi="['manager:goal:export']"
+          type="warning"
+          plain
+          icon="el-icon-download"
+          size="small"
+          @click="handleExport"
+        >导出</el-button>
       </div>
-      <el-button type="primary" :loading="loading" size="small" @click="oneClickSyncing">一键同步</el-button>
+      <el-button type="primary" :loading="loading" icon="el-icon-refresh" size="small" @click="oneClickSyncing">一键同步</el-button>
     </div>
     <el-tabs v-model="activeTab" @tab-click="handleCheckTab">
       <el-tab-pane v-for="(tab, index) in tabs" :key="tab.type" :label="tab.label" :name="String(index)">
@@ -159,6 +174,10 @@ export default {
     searchProcurement() {
       this.currentPage = 1
       this.fetchProducts()
+    },
+
+    handleExport() {
+      this.download('manager/goals/export', {}, `销售指标_${this.formatYMDDate(new Date())}.xlsx`)
     },
 
     handleCurrentChange(page) {

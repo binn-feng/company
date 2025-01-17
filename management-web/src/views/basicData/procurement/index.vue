@@ -25,9 +25,37 @@
           clearable
           @keyup.enter.native="searchProcurement"
         />
-        <el-button v-hasPermi="['quote:ext:query', 'quote:self:query']" type="primary" class="search-button" size="small" @click="searchProcurement">搜索</el-button>
+        <el-button
+          v-hasPermi="['quote:ext:query', 'quote:self:query']"
+          icon="el-icon-search"
+          type="primary"
+          class="search-button"
+          size="small"
+          @click="searchProcurement"
+        >搜索</el-button>
+        <el-button
+          type="warning"
+          plain
+          icon="el-icon-download"
+          size="small"
+          @click="handleSelfExport"
+        >自研导出</el-button>
+        <el-button
+          type="warning"
+          plain
+          icon="el-icon-download"
+          size="small"
+          @click="handleExtExport"
+        >外采导出</el-button>
       </div>
-      <el-button v-hasPermi="['quote:ext:add', 'quote:self:add']" type="primary" class="add-procurement-button" size="small" @click="openAddDialog">新建</el-button>
+      <el-button
+        v-hasPermi="['quote:ext:add', 'quote:self:add']"
+        icon="el-icon-plus"
+        type="primary"
+        class="add-procurement-button"
+        size="small"
+        @click="openAddDialog"
+      >新建</el-button>
     </div>
     <div class="content">
       <el-tabs v-model="activeTab" @tab-click="handleCheckTab">
@@ -376,6 +404,14 @@ export default {
     searchProcurement() {
       this.currentPage = 1
       this.fetchProcurements()
+    },
+
+    handleExtExport() {
+      this.download('manager/ext/export', {}, `外采硬件_${this.formatYMDDate(new Date())}.xlsx`)
+    },
+
+    handleSelfExport() {
+      this.download('manager/self/export', {}, `自研硬件_${this.formatYMDDate(new Date())}.xlsx`)
     },
 
     handleCurrentChange(page) {

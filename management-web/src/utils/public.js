@@ -160,3 +160,29 @@ export function tansParams(params) {
   }
   return result
 }
+
+// 格式化日期为 yyyy-MM-dd HH:mm:ss
+export function formatDate(date) {
+  const padTo2Digits = (num) => String(num).padStart(2, '0')
+  return (
+    date.getFullYear() +
+    '-' +
+    padTo2Digits(date.getMonth() + 1) +
+    '-' +
+    padTo2Digits(date.getDate()) +
+    ' ' +
+    padTo2Digits(date.getHours()) +
+    ':' +
+    padTo2Digits(date.getMinutes()) +
+    ':' +
+    padTo2Digits(date.getSeconds())
+  )
+}
+
+// 格式化日期为 yyyy-MM-dd
+export function formatYMDDate(date) {
+  const year = date.getFullYear()
+  const month = (date.getMonth() + 1).toString().padStart(2, '0')
+  const day = date.getDate().toString().padStart(2, '0')
+  return `${year}-${month}-${day}`
+}

@@ -35,9 +35,31 @@
           clearable
           @keyup.enter.native="searchProduct"
         />
-        <el-button v-hasPermi="['manager:product:query']" type="primary" class="search-button" size="small" @click="searchProduct">搜索</el-button>
+        <el-button
+          v-hasPermi="['manager:product:query']"
+          icon="el-icon-search"
+          type="primary"
+          class="search-button"
+          size="small"
+          @click="searchProduct"
+        >搜索</el-button>
+        <el-button
+          v-hasPermi="['manager:product:export']"
+          type="warning"
+          plain
+          icon="el-icon-download"
+          size="small"
+          @click="handleExport"
+        >导出</el-button>
       </div>
-      <el-button v-hasPermi="['manager:product:add']" type="primary" class="add-product-button" size="small" @click="openAddDialog">新建</el-button>
+      <el-button
+        v-hasPermi="['manager:product:add']"
+        icon="el-icon-plus"
+        type="primary"
+        class="add-product-button"
+        size="small"
+        @click="openAddDialog"
+      >新建</el-button>
     </div>
     <div class="content">
       <el-tabs v-model="activeTab" @tab-click="handleCheckTab">
@@ -303,6 +325,10 @@ export default {
     searchProduct() {
       this.currentPage = 1
       this.fetchProducts()
+    },
+
+    handleExport() {
+      this.download('manager/product/export', {}, `产品_${this.formatYMDDate(new Date())}.xlsx`)
     },
 
     handleCurrentChange(page) {

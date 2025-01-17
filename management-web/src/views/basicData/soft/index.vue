@@ -14,9 +14,31 @@
           size="small"
           @keyup.enter.native="searchSoft"
         />
-        <el-button v-hasPermi="['manager:soft:query']" type="primary" class="search-button" size="small" @click="searchSoft">搜索</el-button>
+        <el-button
+          v-hasPermi="['manager:soft:query']"
+          icon="el-icon-search"
+          type="primary"
+          class="search-button"
+          size="small"
+          @click="searchSoft"
+        >搜索</el-button>
+        <el-button
+          v-hasPermi="['manager:soft:export']"
+          type="warning"
+          plain
+          icon="el-icon-download"
+          size="small"
+          @click="handleExport"
+        >导出</el-button>
       </div>
-      <el-button v-hasPermi="['manager:soft:add']" type="primary" class="add-soft-button" size="small" @click="openAddDialog">新建</el-button>
+      <el-button
+        v-hasPermi="['manager:soft:add']"
+        icon="el-icon-plus"
+        type="primary"
+        class="add-soft-button"
+        size="small"
+        @click="openAddDialog"
+      >新建</el-button>
     </div>
     <div class="content">
       <el-tabs v-model="activeTab" @tab-click="handleCheckTab">
@@ -207,6 +229,12 @@ export default {
     searchSoft() {
       this.currentPage = 1
       this.fetchSofts()
+    },
+
+    handleExport() {
+      this.download('manager/soft/export', {
+        ...this.queryParams
+      }, `软著_${this.formatYMDDate(new Date())}.xlsx`)
     },
 
     handleCurrentChange(page) {

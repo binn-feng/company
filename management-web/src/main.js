@@ -12,24 +12,21 @@ import store from './store'
 import router from './router'
 import directive from './directive'
 import plugins from './plugins'
-import { parseTime, resetForm, handleTree, download } from '@/utils/public'
+import { parseTime, resetForm, handleTree, download, formatDate, formatYMDDate } from '@/utils/public'
 import PATCH_fixMouseOutsideAutoClose from '@/utils/fixMouseOutsideAutoClose.js'
 
 import '@/icons'
 import '@/permission'
 import * as filters from './filters'
 import { registerDirective } from '@/directive/index'
-// import '../mock/login' // 引入 mock 文件
-import './mock'
-import './mock/role'
-import './mock/user'
-import './mock/quote'
 
 // 全局方法挂载
 Vue.prototype.parseTime = parseTime
 Vue.prototype.resetForm = resetForm
 Vue.prototype.download = download
 Vue.prototype.handleTree = handleTree
+Vue.prototype.formatDate = formatDate
+Vue.prototype.formatYMDDate = formatYMDDate
 
 Vue.use(Antd)
 Vue.use(directive)

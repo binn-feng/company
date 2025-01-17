@@ -119,7 +119,7 @@
               @click="handleDelete"
             >删除</el-button>
           </el-col>
-          <el-col :span="1.5">
+          <!-- <el-col :span="1.5">
             <el-button
               v-hasPermi="['system:user:import']"
               type="info"
@@ -128,7 +128,7 @@
               size="mini"
               @click="handleImport"
             >导入</el-button>
-          </el-col>
+          </el-col> -->
           <el-col :span="1.5">
             <el-button
               v-hasPermi="['system:user:export']"
@@ -705,7 +705,7 @@ export default {
     handleExport() {
       this.download('system/user/export', {
         ...this.queryParams
-      }, `user_${new Date().getTime()}.xlsx`)
+      }, `user_${this.formatYMDDate(new Date())}.xlsx`)
     },
     /** 导入按钮操作 */
     handleImport() {
@@ -715,7 +715,7 @@ export default {
     /** 下载模板操作 */
     importTemplate() {
       this.download('system/user/importTemplate', {
-      }, `user_template_${new Date().getTime()}.xlsx`)
+      }, `user_template_${this.formatYMDDate(new Date())}.xlsx`)
     },
     // 文件上传中处理
     handleFileUploadProgress(event, file, fileList) {
