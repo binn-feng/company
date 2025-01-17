@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.internal.manager.mapper.ManagerBuGoalsMapper">
+
+    <resultMap type="ManagerBuGoals" id="ManagerBuGoalsResult">
+        <result property="id"    column="id"    />
+        <result property="crmId"    column="crm_id"    />
+        <result property="parentId"    column="parent_id"    />
+        <result property="assessment"    column="assessment"    />
+        <result property="beginDate"    column="begin_date"    />
+        <result property="endDate"    column="end_date"    />
+        <result property="proportion"    column="proportion"    />
+        <result property="baseValue"    column="base_value"    />
+        <result property="sprintFproportion"    column="sprint_fproportion"    />
+        <result property="sprintValue"    column="sprint_value"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectManagerBuGoalsVo">
+        select id, crm_id, parent_id, assessment, begin_date, end_date, proportion, base_value, sprint_fproportion, sprint_value, create_by, create_time, update_by, update_time, remark from manager_bu_goals
+    </sql>
+
+
+    <select id="selectManagerBuGoalsById" parameterType="Long" resultMap="ManagerBuGoalsResult">
+        <include refid="selectManagerBuGoalsVo"/>
+        where id = #{id}
+    </select>
+    <select id="selectManagerBuGoalsList" resultType="com.internal.manager.vo.ManagerBuGoalsVO">
+        select mbgs.id,
+            mbgs.crm_id,
+            mbgs.parent_id,
+            mbgs.assessment,
+            mbgs.begin_date,
+            mbgs.end_date,
+            mbgs.proportion,
+            mbgs.base_value,
+            mbgs.sprint_fproportion,
+            mbgs.sprint_value,
+            mbg.response_person as responsePerson
+        from manager_bu_goals mbgs
+        left join manager_bu_goal mbg on mbgs.parent_id = mbg.id
+        <where>
+            <if test="targetYear != null and targetYear != ''">
+                and mbg.target_year = #{targetYear}
+            </if>
+            <if test="responsePerson != null and responsePerson != ''">
+                and mbg.response_person like concat('%', #{responsePerson}, '%')
+            </if>
+        </where>
+    </select>
+
+    <insert id="insertManagerBuGoals" parameterType="ManagerBuGoals">
+        insert into manager_bu_goals
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="crmId != null and crmId != ''">crm_id,</if>
+            <if test="parentId != null and parentId != ''">parent_id,</if>
+            <if test="assessment != null and assessment != ''">assessment,</if>
+            <if test="beginDate != null">begin_date,</if>
+            <if test="endDate != null">end_date,</if>
+            <if test="proportion != null">proportion,</if>
+            <if test="baseValue != null">base_value,</if>
+            <if test="sprintFproportion != null">sprint_fproportion,</if>
+            <if test="sprintValue != null">sprint_value,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="crmId != null and crmId != ''">#{crmId},</if>
+            <if test="parentId != null and parentId != ''">#{parentId},</if>
+            <if test="assessment != null and assessment != ''">#{assessment},</if>
+            <if test="beginDate != null">#{beginDate},</if>
+            <if test="endDate != null">#{endDate},</if>
+            <if test="proportion != null">#{proportion},</if>
+            <if test="baseValue != null">#{baseValue},</if>
+            <if test="sprintFproportion != null">#{sprintFproportion},</if>
+            <if test="sprintValue != null">#{sprintValue},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+        </trim>
+    </insert>
+
+    <update id="updateManagerBuGoals" parameterType="ManagerBuGoals">
+        update manager_bu_goals
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="crmId != null and crmId != ''">crm_id = #{crmId},</if>
+            <if test="parentId != null and parentId != ''">parent_id = #{parentId},</if>
+            <if test="assessment != null and assessment != ''">assessment = #{assessment},</if>
+            <if test="beginDate != null">begin_date = #{beginDate},</if>
+            <if test="endDate != null">end_date = #{endDate},</if>
+            <if test="proportion != null">proportion = #{proportion},</if>
+            <if test="baseValue != null">base_value = #{baseValue},</if>
+            <if test="sprintFproportion != null">sprint_fproportion = #{sprintFproportion},</if>
+            <if test="sprintValue != null">sprint_value = #{sprintValue},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteManagerBuGoalsById" parameterType="Long">
+        delete from manager_bu_goals where id = #{id}
+    </delete>
+
+    <delete id="deleteManagerBuGoalsByIds" parameterType="String">
+        delete from manager_bu_goals where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

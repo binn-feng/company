@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.internal.manager.mapper.ManageSoftMapper">
+
+    <resultMap type="com.internal.manager.vo.ManageSoftVO" id="ManageSoftResultVO">
+        <result property="id"    column="id"    />
+        <result property="category"    column="category"    />
+        <result property="shortName"    column="short_name"    />
+        <result property="name"    column="name"    />
+        <result property="linkId"    column="link_id"    />
+        <result property="versionNumber"    column="version_number"    />
+        <result property="registrationMark"    column="registration_mark"    />
+        <result property="regTime"    column="reg_time"    />
+        <result property="pushTime"    column="push_time"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="status"    column="status"    />
+        <result property="productId"    column="product_id"    />
+    </resultMap>
+
+    <sql id="whereConditions">
+        <where>
+            <if test="category != null  and category != ''"> and s1.category = #{category}</if>
+            <if test="shortName != null  and shortName != ''"> and s1.short_name like concat('%', #{shortName}, '%')</if>
+            <if test="name != null  and name != ''"> and s1.name like concat('%', #{name}, '%')</if>
+            <if test="versionNumber != null  and versionNumber != ''"> and s1.version_number = #{versionNumber}</if>
+            <if test="registrationMark != null  and registrationMark != ''"> and s1.registration_mark = #{registrationMark}</if>
+            <if test="status != null  and status != ''"> and s1.status = #{status}</if>
+            <!-- 数据范围过滤 -->
+            ${params.dataScope}
+        </where>
+    </sql>
+
+    <select id="selectManageSoftList" parameterType="com.internal.manager.dto.ManageSoftQueryDTO" resultMap="ManageSoftResultVO">
+        select
+        s1.id,
+        s1.category,
+        s1.short_name,
+        s1.name,
+        s1.link_id,
+        s2.name as link_name,
+        s1.version_number,
+        s1.registration_mark,
+        s1.reg_time,
+        s1.push_time,
+        s1.create_time,
+        s1.update_by,
+        s1.update_time,
+        s1.remark,
+        s1.status,
+        s1.product_id
+        from manage_soft s1
+        left join manage_soft s2 on s1.link_id = s2.id
+        <include refid="whereConditions"/>
+    </select>
+    <select id="selectManageSoftCount" parameterType="com.internal.manager.dto.ManageSoftQueryDTO" resultType="java.lang.Long">
+        select count(s1.id)
+        from manage_soft s1
+        left join manage_soft s2 on s1.link_id = s2.id
+        <include refid="whereConditions"/>
+    </select>
+
+    <delete id="deleteManageSoftById" parameterType="Long">
+        delete from manage_soft where id = #{id}
+    </delete>
+
+    <delete id="deleteManageSoftByIds" parameterType="String">
+        delete from manage_soft where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

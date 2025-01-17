@@ -1,0 +1,199 @@
+@media only screen
+and (max-device-width : 320px){
+  .report-main{
+    margin-top: 20px;
+    .searchContent{
+        display: block !important;
+        width: 100% !important;
+        .searchBlock{
+          width: 100% !important
+          
+        }
+        .searchBlock .el-input__inner{
+          width: 236px !important;
+        }
+        .searchBtn{
+            display: flex !important;
+            margin-bottom: 10px;
+            margin-top: 10px;
+            .el-button {
+              width: 114px;
+            }
+        }
+    }
+    .reportcard-main {
+        width: 100%;
+    }
+    .leave{
+        .el-form-item__label {
+            text-align: left;
+            vertical-align: middle;
+            float: left;
+            font-size: 14px;
+            color: #606266;
+            line-height: 40px;
+            padding: 0 12px 0 0;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+        .el-input__inner {
+            width: 200px;
+        }
+    }
+    .workdayReport{
+        .el-form-item__content {
+            line-height: 40px;
+            position: relative;
+            font-size: 14px;
+            width: 260px;
+            margin-left: 0px;
+            margin-left: 0 !important;
+        }
+        .el-form-item__label {
+            text-align: left;
+        }
+        .el-input__inner {
+            width: 200px !important;
+        }
+        .el-textarea{
+          width: 76.5% !important;
+        }
+    }
+    .reportfooter {
+        width: 100%;
+        margin: 0 auto;
+        margin-top: 10px;
+        .footerBtn{
+          width: 100%;
+        }
+    }
+    .draft{
+      margin-left: 0 !important;
+      margin-bottom: 10px;
+    }
+    // .displays{
+    //   display: none;
+    // }
+  }
+}
+@media only screen
+and (min-device-width : 330px)
+and (max-device-width : 500px){
+  .create-report .el-date-editor.el-input,
+.el-date-editor.el-input__inner {
+  width: 100% !important;
+}
+.el-card .is-always-shadow, .el-card.is-hover-shadow:focus, .el-card.is-hover-shadow:hover {
+  -webkit-box-shadow: 0 !important;
+  box-shadow: 0 !important;
+}
+.content_title .title{
+  /* margin-left: 55px; */
+  margin-left: 0 !important;
+}
+.content_title{
+  margin-right: 0 !important;
+  height: auto !important;
+}
+.reportcard-main {
+  // margin-top: 50px !important;
+}
+  .report-main{
+    margin-top: 20px;
+    .searchContent{
+        display: block !important;
+        width: 100% !important;
+        margin-bottom: 50px !important;
+        .searchBlock{
+          width: 100% !important;
+          
+        }
+        .searchBlock .el-input__inner{
+          width: 100% !important;
+        }
+        .searchBtn{
+            display: flex !important;
+            // float: left !important;
+            margin-bottom: 10px;
+            margin-top: 10px;
+            float: none !important;
+            .el-button {
+              width: 49.5%;
+          }
+          .el-button+.el-button {
+            margin-left: 10px !important;
+          }
+        }
+    }
+    .reportcard-main {
+        width: 100%;
+    }
+    .leave{
+        .el-form-item__label {
+            text-align: left;
+            vertical-align: middle;
+            float: left;
+            font-size: 14px;
+            color: #606266;
+            line-height: 40px;
+            padding: 0 12px 0 0;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+        .el-input__inner {
+            width: 260px !important;
+        }
+    }
+    .workdayReport{
+        .el-form-item__content {
+            line-height: 40px;
+            position: relative;
+            font-size: 14px;
+            width: 260px;
+            margin-left: 0px;
+            margin-left: 0 !important;
+        }
+        .el-form-item__label {
+            text-align: left;
+        }
+        .el-input__inner {
+            width: 250px !important;
+        }
+        .el-textarea{
+          width: 95.5% !important;
+        }
+    }
+    .reportfooter {
+        width: 100%;
+        margin: 0 auto;
+        margin-top: 10px;
+        .footerBtn{
+          width: 100%;
+          
+        }
+        .el-button+.el-button {
+          margin-left: 0px !important;
+        }
+    }
+    .draft{
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+      margin-bottom: 10px;
+    }
+    // .displays{
+    //   display: none;
+    // }
+    // .create-report .el-date-editor .el-input__inner {
+    //   width: 100% !important;
+    // }
+  }
+}
+// @media only screen
+// and (min-device-width : 510px){
+//   // .displays{
+//   //   display: flex;
+//   // }
+//   // .isWidth{
+//   //   display: none;
+//   // }
+// }

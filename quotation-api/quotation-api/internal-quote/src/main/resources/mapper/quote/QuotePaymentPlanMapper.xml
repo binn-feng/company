@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.internal.quote.mapper.QuotePaymentPlanMapper">
+    
+    <resultMap type="QuotePaymentPlan" id="QuotePaymentPlanResult">
+        <result property="id"    column="id"    />
+        <result property="contractName"    column="contract_name"    />
+        <result property="crmPaymentPlanId"    column="crm_payment_plan_id"    />
+        <result property="contractNumber"    column="contract_number"    />
+        <result property="contractType"    column="contract_type"    />
+        <result property="contractAmount"    column="contract_amount"    />
+        <result property="signingDate"    column="signing_date"    />
+        <result property="customerName"    column="customer_name"    />
+        <result property="salesperson"    column="salesperson"    />
+        <result property="paymentInstallment"    column="payment_installment"    />
+        <result property="paymentDate"    column="payment_date"    />
+        <result property="paymentTerms"    column="payment_terms"    />
+        <result property="paymentAmount"    column="payment_amount"    />
+        <result property="receivedAmount"    column="received_amount"    />
+        <result property="accountsReceivable"    column="accounts_receivable"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectQuotePaymentPlanVo">
+        select id, crm_payment_plan_id, contract_name, contract_number, contract_type, contract_amount, signing_date, customer_name, salesperson, payment_installment, payment_date, payment_terms, payment_amount, received_amount, accounts_receivable, create_by, create_time, update_by, update_time, remark from quote_payment_plan
+    </sql>
+
+    <select id="selectQuotePaymentPlanList" parameterType="QuotePaymentPlan" resultMap="QuotePaymentPlanResult">
+        <include refid="selectQuotePaymentPlanVo"/>
+        <where>  
+            <if test="contractName != null  and contractName != ''"> and contract_name like concat('%', #{contractName}, '%')</if>
+            <if test="contractNumber != null  and contractNumber != ''"> and contract_number = #{contractNumber}</if>
+            <if test="contractType != null  and contractType != ''"> and contract_type = #{contractType}</if>
+            <if test="contractAmount != null "> and contract_amount = #{contractAmount}</if>
+            <if test="signingDate != null "> and signing_date = #{signingDate}</if>
+            <if test="customerName != null  and customerName != ''"> and customer_name like concat('%', #{customerName}, '%')</if>
+            <if test="salesperson != null  and salesperson != ''"> and salesperson = #{salesperson}</if>
+            <if test="paymentInstallment != null "> and payment_installment = #{paymentInstallment}</if>
+            <if test="paymentDate != null "> and payment_date = #{paymentDate}</if>
+            <if test="paymentTerms != null  and paymentTerms != ''"> and payment_terms = #{paymentTerms}</if>
+            <if test="paymentAmount != null "> and payment_amount = #{paymentAmount}</if>
+            <if test="receivedAmount != null "> and received_amount = #{receivedAmount}</if>
+            <if test="accountsReceivable != null "> and accounts_receivable = #{accountsReceivable}</if>
+        </where>
+    </select>
+    
+    <select id="selectQuotePaymentPlanById" parameterType="Long" resultMap="QuotePaymentPlanResult">
+        <include refid="selectQuotePaymentPlanVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertQuotePaymentPlan" parameterType="QuotePaymentPlan" useGeneratedKeys="true" keyProperty="id">
+        insert into quote_payment_plan
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="contractName != null">contract_name,</if>
+            <if test="contractNumber != null and contractNumber != ''">contract_number,</if>
+            <if test="contractType != null">contract_type,</if>
+            <if test="contractAmount != null">contract_amount,</if>
+            <if test="signingDate != null">signing_date,</if>
+            <if test="customerName != null">customer_name,</if>
+            <if test="salesperson != null">salesperson,</if>
+            <if test="paymentInstallment != null">payment_installment,</if>
+            <if test="paymentDate != null">payment_date,</if>
+            <if test="paymentTerms != null">payment_terms,</if>
+            <if test="paymentAmount != null">payment_amount,</if>
+            <if test="receivedAmount != null">received_amount,</if>
+            <if test="accountsReceivable != null">accounts_receivable,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="contractName != null">#{contractName},</if>
+            <if test="contractNumber != null and contractNumber != ''">#{contractNumber},</if>
+            <if test="contractType != null">#{contractType},</if>
+            <if test="contractAmount != null">#{contractAmount},</if>
+            <if test="signingDate != null">#{signingDate},</if>
+            <if test="customerName != null">#{customerName},</if>
+            <if test="salesperson != null">#{salesperson},</if>
+            <if test="paymentInstallment != null">#{paymentInstallment},</if>
+            <if test="paymentDate != null">#{paymentDate},</if>
+            <if test="paymentTerms != null">#{paymentTerms},</if>
+            <if test="paymentAmount != null">#{paymentAmount},</if>
+            <if test="receivedAmount != null">#{receivedAmount},</if>
+            <if test="accountsReceivable != null">#{accountsReceivable},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateQuotePaymentPlan" parameterType="QuotePaymentPlan">
+        update quote_payment_plan
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="contractName != null">contract_name = #{contractName},</if>
+            <if test="contractNumber != null and contractNumber != ''">contract_number = #{contractNumber},</if>
+            <if test="contractType != null">contract_type = #{contractType},</if>
+            <if test="contractAmount != null">contract_amount = #{contractAmount},</if>
+            <if test="signingDate != null">signing_date = #{signingDate},</if>
+            <if test="customerName != null">customer_name = #{customerName},</if>
+            <if test="salesperson != null">salesperson = #{salesperson},</if>
+            <if test="paymentInstallment != null">payment_installment = #{paymentInstallment},</if>
+            <if test="paymentDate != null">payment_date = #{paymentDate},</if>
+            <if test="paymentTerms != null">payment_terms = #{paymentTerms},</if>
+            <if test="paymentAmount != null">payment_amount = #{paymentAmount},</if>
+            <if test="receivedAmount != null">received_amount = #{receivedAmount},</if>
+            <if test="accountsReceivable != null">accounts_receivable = #{accountsReceivable},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteQuotePaymentPlanById" parameterType="Long">
+        delete from quote_payment_plan where id = #{id}
+    </delete>
+
+    <delete id="deleteQuotePaymentPlanByIds" parameterType="String">
+        delete from quote_payment_plan where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

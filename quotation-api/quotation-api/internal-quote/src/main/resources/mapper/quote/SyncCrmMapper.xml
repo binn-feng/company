@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.internal.quote.mapper.SyncCrmMapper">
+
+	<select id="syncCrmInfo" resultType="com.internal.quote.dto.BusinessOpportunityDTO">
+		select
+			bo.id AS id,
+			bo.name ,
+			bo.code ,
+			bo.infoDesc,
+			bo.stage,
+			ap.name,
+			bo.customerId,
+			cc.name as customerName,
+			bo.userId,
+			bp.userName,
+			bs.id AS supportId,
+			bs.supportType,
+			bo.productName ,
+			bo.reportStatus,
+			bo.currentState,
+			bs.vdef2,
+			bs.vdef3,
+			bo.createUser AS createBy,
+			bo.createTime ,
+			bo.updateUser AS updateBy,
+			bo.updateTime,
+			bs.createUser AS supportCreateBy,
+			bs.createTime AS supportCreateTime,
+			bs.updateUser AS supportUpdateBy,
+			bs.updateTime AS supportUpdateTime
+		FROM
+			bu_opportunity bo
+				LEFT JOIN ab_processs ap ON ap.id = bo.stage
+				LEFT JOIN cs_customer cc ON cc.id = bo.customerId
+				LEFT JOIN bs_person bp ON bo.userId = bp.userId
+				LEFT JOIN bu_salessupport bs ON bs.opportunityId = bo.id
+		where bo.reportStatus = '00000402' and bs.supportType = '0006' and bo.currentState not in('00001304','00001305','00001303','00001302')
+	</select>
+	<select id="syncCrmStatusInfo" resultType="com.internal.quote.dto.BusinessOpportunityStatusDTO">
+		select
+			bo.id AS id,
+			bo.name ,
+			bo.code ,
+			bo.infoDesc,
+			bo.stage,
+			bo.customerId,
+			bo.userId,
+			bo.productName ,
+			bo.reportStatus,
+			bo.currentState,
+			bo.createUser AS createBy,
+			bo.createTime ,
+			bo.updateUser AS updateBy,
+			bo.updateTime
+		FROM
+			bu_opportunity bo
+		where bo.currentState in ('00001304','00001305','00001303','00001302')
+	</select>
+	<select id="syncCrmUserInfo" resultType="com.internal.common.core.domain.entity.SysUser">
+		SELECT
+			su.id AS crmUserId,
+			su.USER_NAME AS nickName,
+			su.LOGIN_NAME AS userName,
+			su.EMAIL AS email,
+			sd.ID  AS crmDeptId,
+			su.TELEPHONE AS phonenumber,
+			su.SEX AS sex,
+			~su.YN_ENABLE &amp; 1 AS status,
+			su.UPDATE_TIME AS updateTime
+		FROM sys_user su
+		LEFT JOIN sys_department sd ON su.DEPT_LONG_CODE  = sd.LONG_CODE
+		WHERE USER_NAME != 'admin'
+	</select>
+	<select id="syncCrmDeptInfo" resultType="com.internal.common.core.domain.entity.SysDept">
+		SELECT
+			sd.ID as crmDeptId,
+			sd.DEPT_NAME as deptName,
+			'1' as parentId,
+			sd.CORP_ID as ancestors,
+			~sd.YN_ENABLE &amp; 1 AS status,
+			sd.UPDATE_TIME as updateTime
+		FROM sys_department sd
+		WHERE sd.YN_ENABLE = 1
+		UNION
+		SELECT
+			sc.id,
+			sc.CORP_NAME ,
+			'0' as parentId,
+			'' as ancestors,
+			sc.UPDATE_TIME as updateTime
+		FROM sys_corporation sc
+		WHERE sc.YN_ENABLE = 1
+		ORDER BY parentId
+	</select>
+    <select id="syncPaymentPlan" resultType="com.internal.quote.domain.QuotePaymentPlan">
+		select
+			vmc.id AS crmPaymentPlanId,
+			vmc.contractName ,
+			vmc.contractCode AS contractNumber,
+			vmc.contractType ,
+			vmc.contractMoney AS contractAmount,
+			vmc.signDate ,
+			vmc.customerId,
+			cc.name AS customerName,
+			(SELECT cc2.name  FROM cs_customer cc2 WHERE id = vmc.belongPerson) AS salesperson,
+			vmc.times  AS paymentInstallment,
+			vmc.moneybackTime AS paymentDate,
+			vmc.conditions AS paymentTerms,
+			vmc.money AS patmentAmount,
+			vmc.receivedMoney ,
+			vmc.leftMoney AS accountsReceivable
+		from view_money_condition vmc
+		LEFT JOIN cs_customer cc ON vmc.customerId = cc.id
+	</select>
+	<select id="syncSaleContract" resultType="com.internal.quote.domain.QuoteSalesContract">
+		SELECT
+			bsc.id AS crmContractId,
+			bsc.contractName ,
+			bsc.contractCode AS contractNumber,
+			bsc.contractType ,
+			bsc.contractMoney contractAmount  ,
+			bsc.signDate as signingDate,
+			cc.name AS customerName  ,
+			bsc.assetsMoney AS standardAmount,
+			bsc.discount AS contractDiscount,
+			bsc.receivedMoney AS receivedAmount,
+			bsc.leftMoney AS accountsReceivable,
+			bsc.updateTime
+		FROM bu_sale_contract bsc
+		LEFT JOIN cs_customer cc ON bsc.customerId = cc.id
+	</select>
+	 <select id="syncSalesTarget" resultType="com.internal.manager.domain.ManagerBuGoal">
+		SELECT
+		    bg.id as crmId,
+			bg.targetYear,
+			sdc_type.DIC_ID_NAME AS type,
+			sdc_achievement.DIC_ID_NAME AS achievementType,
+			sdc_indicator.DIC_ID_NAME AS indicatorTypes,
+			bg.corpId,
+			sdc_examine.DIC_ID_NAME AS examineType,
+			su.USER_NAME AS responsePerson,
+			bg.goalValue,
+			bg.sportGoal,
+			bg.beginDate,
+			bg.endDate,
+			bg.updateTime
+		FROM
+			bu_goal bg
+				LEFT JOIN cfbase_dms.sys_dic_cfg sdc_type ON sdc_type.DIC_ID = bg.`type` AND sdc_type.DIC_NO = 0204
+				LEFT JOIN cfbase_dms.sys_dic_cfg sdc_achievement ON sdc_achievement.DIC_ID = bg.achievementType AND sdc_achievement.DIC_NO = 0305
+				LEFT JOIN cfbase_dms.sys_dic_cfg sdc_indicator ON sdc_indicator.DIC_ID = bg.indicatorTypes
+				LEFT JOIN cfbase_dms.sys_dic_cfg sdc_examine ON sdc_examine.DIC_ID = bg.examineType AND sdc_examine.DIC_NO = 0259
+				LEFT JOIN cfbase_dms.sys_user su ON su.ID = bg.responsePerson;
+	</select>
+	<select id="syncSalesTargetGoal" resultType="com.internal.manager.domain.ManagerBuGoals">
+		SELECT
+		    bg.id as crmId,
+			bg.fid as crmParentId,
+			bg.assessment ,
+			bg.beginDate ,
+			bg.endDate ,
+			bg.proportion ,
+			bg.baseValue ,
+			bg.sprintFproportion ,
+			bg.sprintValue ,
+			bg.updateTime
+		FROM bu_goals bg
+	</select>
+
+	<update id="syncQuoteStatus">
+		UPDATE bu_opportunity bo SET bo.currentState = #{param.currentState} WHERE bo.id = #{param.id}
+	</update>
+	<update id="updateCrmStage">
+		UPDATE bu_opportunity bo SET bo.stage = #{param.stage} WHERE bo.id = #{param.id}
+	</update>
+
+</mapper> 

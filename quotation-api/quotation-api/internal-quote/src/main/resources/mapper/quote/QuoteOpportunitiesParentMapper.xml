@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.internal.quote.mapper.QuoteOpportunitiesParentMapper">
+
+    <resultMap type="com.internal.quote.domain.QuoteOpportunitiesParent" id="QuoteOpportunitiesParentResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="crmId"    column="crm_id"    />
+        <result property="crmStage"    column="crm_stage"    />
+        <result property="crmState"    column="crm_state"    />
+        <result property="category"    column="category"    />
+        <result property="saleId"    column="sale_id"    />
+        <result property="saleName"    column="sale_name"    />
+        <result property="customersName"    column="customers_name"    />
+        <result property="introduce"    column="introduce"    />
+        <result property="status"    column="status"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="crmUpdateTime"    column="crm_update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="loseType"    column="lose_type"    />
+    </resultMap>
+
+    <sql id="selectQuoteOpportunitiesParentVo">
+        select id, name, crm_id, crm_stage, crm_state, category, sale_id, sale_name, customers_name, introduce, `status`, create_by, create_time, update_by, update_time, crm_update_time, remark,lose_type from quote_opportunities_parent
+    </sql>
+
+    <select id="selectQuoteOpportunitiesParentList" parameterType="com.internal.quote.domain.QuoteOpportunitiesParent"
+            resultMap="QuoteOpportunitiesParentResult">
+        <include refid="selectQuoteOpportunitiesParentVo"/>
+        <where>
+            <if test="name != null  and name != ''">and name like concat('%', #{name}, '%')</if>
+            <if test="crmId != null  and crmId != ''">and crm_id = #{crmId}</if>
+            <if test="crmStage != null  and crmStage != ''">and crm_stage = #{crmStage}</if>
+            <if test="crmState != null  and crmState != ''">and crm_state = #{crmState}</if>
+            <if test="category != null  and category != ''">and category = #{category}</if>
+            <if test="saleId != null ">and sale_id = #{saleId}</if>
+            <if test="saleName != null  and saleName != ''">and sale_name like concat('%', #{saleName}, '%')</if>
+            <if test="customersName != null  and customersName != ''">and customers_name like concat('%',
+                #{customersName}, '%')
+            </if>
+            <if test="introduce != null  and introduce != ''">and introduce = #{introduce}</if>
+        </where>
+    </select>
+
+    <select id="selectQuoteOpportunitiesParentById" parameterType="Long" resultMap="QuoteOpportunitiesParentResult">
+        <include refid="selectQuoteOpportunitiesParentVo"/>
+        where id = #{id}
+    </select>
+
+    <delete id="deleteQuoteOpportunitiesParentById" parameterType="Long">
+        delete from quote_opportunities_parent where id = #{id}
+    </delete>
+
+    <delete id="deleteQuoteOpportunitiesParentByIds" parameterType="String">
+        delete from quote_opportunities_parent where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

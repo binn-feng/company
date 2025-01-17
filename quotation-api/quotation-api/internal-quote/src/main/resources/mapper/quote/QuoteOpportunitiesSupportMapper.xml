@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.internal.quote.mapper.QuoteOpportunitiesSupportMapper">
+    
+    <resultMap type="QuoteOpportunitiesSupport" id="QuoteOpportunitiesSupportDetailResult">
+        <result property="id"    column="id"    />
+        <result property="opportunitiesId"    column="opportunities_id"    />
+        <result property="opportunitiesDetailId"    column="opportunities_detail_id"    />
+        <result property="type"    column="type"    />
+        <result property="content"    column="content"    />
+        <result property="within"    column="within"    />
+        <result property="local"    column="local"    />
+        <result property="unit"    column="unit"    />
+        <result property="remote"    column="remote"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectQuoteOpportunitiesSupportDetailVo">
+        select id,opportunities_id, opportunities_detail_id, type, content, within, local, unit, remote, create_by, create_time, update_by, update_time, remark from quote_opportunities_support
+    </sql>
+
+    <select id="selectQuoteOpportunitiesSupportList" parameterType="QuoteOpportunitiesSupport" resultMap="QuoteOpportunitiesSupportDetailResult">
+        <include refid="selectQuoteOpportunitiesSupportDetailVo"/>
+        <where>  
+            <if test="opportunitiesDetailId != null "> and opportunities_detail_id = #{opportunitiesDetailId}</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="within != null "> and within = #{within}</if>
+            <if test="local != null "> and local = #{local}</if>
+            <if test="remote != null "> and remote = #{remote}</if>
+        </where>
+    </select>
+    
+    <select id="selectQuoteOpportunitiesSupportById" parameterType="Long" resultMap="QuoteOpportunitiesSupportDetailResult">
+        <include refid="selectQuoteOpportunitiesSupportDetailVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertQuoteOpportunitiesSupport" parameterType="QuoteOpportunitiesSupport">
+        insert into quote_opportunities_support_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="opportunitiesDetailId != null">opportunities_detail_id,</if>
+            <if test="type != null">type,</if>
+            <if test="content != null">content,</if>
+            <if test="within != null">within,</if>
+            <if test="local != null">local,</if>
+            <if test="remote != null">remote,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="opportunitiesDetailId != null">#{opportunitiesDetailId},</if>
+            <if test="type != null">#{type},</if>
+            <if test="content != null">#{content},</if>
+            <if test="within != null">#{within},</if>
+            <if test="local != null">#{local},</if>
+            <if test="remote != null">#{remote},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+    <insert id="insertBatchDetail" parameterType="java.util.List">
+        INSERT INTO quote_opportunities_support
+        (id, opportunities_detail_id, type, content, within, local, unit, remote, create_by, create_time, update_by, update_time, remark)
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id}, #{item.opportunitiesDetailId}, #{item.type}, #{item.content}, #{item.within},
+            #{item.local}, #{item.unit}, #{item.remote}, #{item.createBy}, #{item.createTime},
+            #{item.updateBy}, #{item.updateTime}, #{item.remark})
+        </foreach>
+    </insert>
+
+    <update id="updateQuoteOpportunitiesSupport" parameterType="QuoteOpportunitiesSupport">
+        update quote_opportunities_support_detail
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="opportunitiesDetailId != null">opportunities_detail_id = #{opportunitiesDetailId},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="within != null">within = #{within},</if>
+            <if test="local != null">local = #{local},</if>
+            <if test="remote != null">remote = #{remote},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteQuoteOpportunitiesSupportById" parameterType="Long">
+        delete from quote_opportunities_support_detail where id = #{id}
+    </delete>
+
+    <delete id="deleteQuoteOpportunitiesSupportByIds" parameterType="String">
+        delete from quote_opportunities_support_detail where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.internal.quote.mapper.QuoteOpportunitiesImplementMapper">
+    
+    <resultMap type="QuoteOpportunitiesImplement" id="QuoteOpportunitiesImplementResult">
+        <result property="id"    column="id"    />
+        <result property="opportunitiesId"    column="opportunities_id"    />
+        <result property="opportunitiesDetailId"    column="opportunities_detail_id"    />
+        <result property="localCost"    column="local_cost"    />
+        <result property="localDay"    column="local_day"    />
+        <result property="localSubtotal"    column="local_subtotal"    />
+        <result property="remoteCost"    column="remote_cost"    />
+        <result property="remoteDay"    column="remote_day"    />
+        <result property="remoteSubtotal"    column="remote_subtotal"    />
+        <result property="personDayAmount"    column="person_day_amount"    />
+        <result property="intervalRange"    column="interval_range"    />
+        <result property="occurrences"    column="occurrences"    />
+        <result property="packagePrice"    column="package_price"    />
+        <result property="totalCost"    column="total_cost"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectQuoteOpportunitiesImplementVo">
+        select id, opportunities_id,opportunities_detail_id, local_cost, local_day, local_subtotal, remote_cost, remote_day, remote_subtotal, person_day_amount, interval_range, occurrences, package_price, total_cost, create_by, create_time, update_by, update_time, remark from quote_opportunities_implement
+    </sql>
+
+    <select id="selectQuoteOpportunitiesImplementList" parameterType="QuoteOpportunitiesImplement" resultMap="QuoteOpportunitiesImplementResult">
+        <include refid="selectQuoteOpportunitiesImplementVo"/>
+        <where>  
+            <if test="opportunitiesDetailId != null "> and opportunities_detail_id = #{opportunitiesDetailId}</if>
+            <if test="localCost != null "> and local_cost = #{localCost}</if>
+            <if test="localDay != null "> and local_day = #{localDay}</if>
+            <if test="localSubtotal != null "> and local_subtotal = #{localSubtotal}</if>
+            <if test="remoteCost != null "> and remote_cost = #{remoteCost}</if>
+            <if test="remoteDay != null "> and remote_day = #{remoteDay}</if>
+            <if test="remoteSubtotal != null "> and remote_subtotal = #{remoteSubtotal}</if>
+            <if test="personDayAmount != null "> and person_day_amount = #{personDayAmount}</if>
+            <if test="intervalRange != null  and intervalRange != ''"> and interval_range = #{intervalRange}</if>
+            <if test="occurrences != null "> and occurrences = #{occurrences}</if>
+            <if test="packagePrice != null "> and package_price = #{packagePrice}</if>
+            <if test="totalCost != null "> and total_cost = #{totalCost}</if>
+        </where>
+    </select>
+    
+    <select id="selectQuoteOpportunitiesImplementById" parameterType="Long" resultMap="QuoteOpportunitiesImplementResult">
+        <include refid="selectQuoteOpportunitiesImplementVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertQuoteOpportunitiesImplement" parameterType="QuoteOpportunitiesImplement">
+        insert into quote_opportunities_implement
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="opportunitiesDetailId != null">opportunities_detail_id,</if>
+            <if test="localCost != null">local_cost,</if>
+            <if test="localDay != null">local_day,</if>
+            <if test="localSubtotal != null">local_subtotal,</if>
+            <if test="remoteCost != null">remote_cost,</if>
+            <if test="remoteDay != null">remote_day,</if>
+            <if test="remoteSubtotal != null">remote_subtotal,</if>
+            <if test="personDayAmount != null">person_day_amount,</if>
+            <if test="intervalRange != null">interval_range,</if>
+            <if test="occurrences != null">occurrences,</if>
+            <if test="packagePrice != null">package_price,</if>
+            <if test="totalCost != null">total_cost,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="opportunitiesDetailId != null">#{opportunitiesDetailId},</if>
+            <if test="localCost != null">#{localCost},</if>
+            <if test="localDay != null">#{localDay},</if>
+            <if test="localSubtotal != null">#{localSubtotal},</if>
+            <if test="remoteCost != null">#{remoteCost},</if>
+            <if test="remoteDay != null">#{remoteDay},</if>
+            <if test="remoteSubtotal != null">#{remoteSubtotal},</if>
+            <if test="personDayAmount != null">#{personDayAmount},</if>
+            <if test="intervalRange != null">#{intervalRange},</if>
+            <if test="occurrences != null">#{occurrences},</if>
+            <if test="packagePrice != null">#{packagePrice},</if>
+            <if test="totalCost != null">#{totalCost},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+    <insert id="insertBatchSomeColumn" parameterType="java.util.List">
+        INSERT INTO quote_opportunities_implement
+        (id, opportunities_detail_id, local_cost, local_day, local_subtotal, remote_cost, remote_day,remote_subtotal,
+         person_day_amount, interval_range, occurrences, package_price, total_cost, create_by, create_time, update_by, update_time, remark)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.id}, #{item.opportunitiesDetailId}, #{item.localCost}, #{item.localDay}, #{item.localSubtotal}, #{item.remoteCost}, #{item.remoteDay},#{item.remoteSubtotal},
+             #{item.personDayAmount}, #{item.intervalRange}, #{item.occurrences}, #{item.packagePrice}, #{item.totalCost}, #{item.createBy}, #{item.createTime}, #{item.updateBy}, #{item.updateTime}, #{item.remark})
+        </foreach>
+    </insert>
+
+    <update id="updateQuoteOpportunitiesImplement" parameterType="QuoteOpportunitiesImplement">
+        update quote_opportunities_implement
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="opportunitiesDetailId != null">opportunities_detail_id = #{opportunitiesDetailId},</if>
+            <if test="localCost != null">local_cost = #{localCost},</if>
+            <if test="localDay != null">local_day = #{localDay},</if>
+            <if test="localSubtotal != null">local_subtotal = #{localSubtotal},</if>
+            <if test="remoteCost != null">remote_cost = #{remoteCost},</if>
+            <if test="remoteDay != null">remote_day = #{remoteDay},</if>
+            <if test="remoteSubtotal != null">remote_subtotal = #{remoteSubtotal},</if>
+            <if test="personDayAmount != null">person_day_amount = #{personDayAmount},</if>
+            <if test="intervalRange != null">interval_range = #{intervalRange},</if>
+            <if test="occurrences != null">occurrences = #{occurrences},</if>
+            <if test="packagePrice != null">package_price = #{packagePrice},</if>
+            <if test="totalCost != null">total_cost = #{totalCost},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteQuoteOpportunitiesImplementById" parameterType="Long">
+        delete from quote_opportunities_implement where id = #{id}
+    </delete>
+
+    <delete id="deleteQuoteOpportunitiesImplementByIds" parameterType="String">
+        delete from quote_opportunities_implement where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

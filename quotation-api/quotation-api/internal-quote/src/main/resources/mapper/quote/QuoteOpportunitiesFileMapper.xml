@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.internal.quote.mapper.QuoteOpportunitiesFileMapper">
+    
+    <resultMap type="QuoteOpportunitiesFile" id="QuoteOpportunitiesFileResult">
+        <result property="id"    column="id"    />
+        <result property="opportunitiesId"    column="opportunities_id"    />
+        <result property="opportunitiesParentId"    column="opportunities_parent_id"    />
+        <result property="fileType"    column="file_type"    />
+        <result property="path"    column="path"    />
+        <result property="url"    column="url"    />
+        <result property="uniqueFileName"    column="unique_file_name"    />
+        <result property="originalFileName"    column="original_file_name"    />
+        <result property="suffix"    column="suffix"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectQuoteOpportunitiesFileVo">
+        select id, opportunities_id, opportunities_parent_id, file_type, path, url, unique_file_name, original_file_name, suffix, create_by, create_time, update_by, update_time, remark from quote_opportunities_file
+    </sql>
+
+    <select id="selectQuoteOpportunitiesFileList" parameterType="QuoteOpportunitiesFile" resultMap="QuoteOpportunitiesFileResult">
+        <include refid="selectQuoteOpportunitiesFileVo"/>
+        <where>  
+            <if test="opportunitiesId != null "> and opportunities_id = #{opportunitiesId}</if>
+            <if test="fileType != null  and fileType != ''"> and file_type = #{fileType}</if>
+            <if test="path != null  and path != ''"> and path = #{path}</if>
+            <if test="url != null  and url != ''"> and url = #{url}</if>
+            <if test="uniqueFileName != null  and uniqueFileName != ''"> and unique_file_name like concat('%', #{uniqueFileName}, '%')</if>
+            <if test="originalFileName != null  and originalFileName != ''"> and original_file_name like concat('%', #{originalFileName}, '%')</if>
+            <if test="suffix != null  and suffix != ''"> and suffix = #{suffix}</if>
+        </where>
+    </select>
+    
+    <select id="selectQuoteOpportunitiesFileById" parameterType="Long" resultMap="QuoteOpportunitiesFileResult">
+        <include refid="selectQuoteOpportunitiesFileVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertQuoteOpportunitiesFile" parameterType="QuoteOpportunitiesFile" useGeneratedKeys="true" keyProperty="id">
+        insert into quote_opportunities_file
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="opportunitiesId != null">opportunities_id,</if>
+            <if test="fileType != null">file_type,</if>
+            <if test="path != null">path,</if>
+            <if test="url != null">url,</if>
+            <if test="uniqueFileName != null">unique_file_name,</if>
+            <if test="originalFileName != null">original_file_name,</if>
+            <if test="suffix != null">suffix,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="opportunitiesId != null">#{opportunitiesId},</if>
+            <if test="fileType != null">#{fileType},</if>
+            <if test="path != null">#{path},</if>
+            <if test="url != null">#{url},</if>
+            <if test="uniqueFileName != null">#{uniqueFileName},</if>
+            <if test="originalFileName != null">#{originalFileName},</if>
+            <if test="suffix != null">#{suffix},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateQuoteOpportunitiesFile" parameterType="QuoteOpportunitiesFile">
+        update quote_opportunities_file
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="opportunitiesId != null">opportunities_id = #{opportunitiesId},</if>
+            <if test="fileType != null">file_type = #{fileType},</if>
+            <if test="path != null">path = #{path},</if>
+            <if test="url != null">url = #{url},</if>
+            <if test="uniqueFileName != null">unique_file_name = #{uniqueFileName},</if>
+            <if test="originalFileName != null">original_file_name = #{originalFileName},</if>
+            <if test="suffix != null">suffix = #{suffix},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteQuoteOpportunitiesFileById" parameterType="Long">
+        delete from quote_opportunities_file where id = #{id}
+    </delete>
+
+    <delete id="deleteQuoteOpportunitiesFileByIds" parameterType="String">
+        delete from quote_opportunities_file where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

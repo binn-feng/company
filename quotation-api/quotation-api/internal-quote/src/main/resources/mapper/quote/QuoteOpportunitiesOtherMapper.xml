@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.internal.quote.mapper.QuoteOpportunitiesOtherMapper">
+    
+    <resultMap type="QuoteOpportunitiesOther" id="QuoteOpportunitiesOtherResult">
+        <result property="id"    column="id"    />
+        <result property="opportunitiesId"    column="opportunities_id"    />
+        <result property="opportunitiesDetailId"    column="opportunities_detail_id"    />
+        <result property="serialNumber"    column="serial_number"    />
+        <result property="name"    column="name"    />
+        <result property="unit"    column="unit"    />
+        <result property="unitPrice"    column="unit_price"    />
+        <result property="number"    column="number"    />
+        <result property="amount"    column="amount"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectQuoteOpportunitiesOtherVo">
+        select id,opportunities_id, opportunities_detail_id, serial_number, name, unit, unit_price, number, amount, create_by, create_time, update_by, update_time, remark from quote_opportunities_other
+    </sql>
+
+    <select id="selectQuoteOpportunitiesOtherList" parameterType="QuoteOpportunitiesOther" resultMap="QuoteOpportunitiesOtherResult">
+        <include refid="selectQuoteOpportunitiesOtherVo"/>
+        <where>  
+            <if test="opportunitiesDetailId != null "> and opportunities_detail_id = #{opportunitiesDetailId}</if>
+            <if test="serialNumber != null  and serialNumber != ''"> and serial_number = #{serialNumber}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="unit != null  and unit != ''"> and unit = #{unit}</if>
+            <if test="unitPrice != null "> and unit_price = #{unitPrice}</if>
+            <if test="number != null "> and number = #{number}</if>
+            <if test="amount != null "> and amount = #{amount}</if>
+        </where>
+    </select>
+    
+    <select id="selectQuoteOpportunitiesOtherById" parameterType="Long" resultMap="QuoteOpportunitiesOtherResult">
+        <include refid="selectQuoteOpportunitiesOtherVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertQuoteOpportunitiesOther" parameterType="QuoteOpportunitiesOther">
+        insert into quote_opportunities_other
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="opportunitiesDetailId != null">opportunities_detail_id,</if>
+            <if test="serialNumber != null">serial_number,</if>
+            <if test="name != null">name,</if>
+            <if test="unit != null">unit,</if>
+            <if test="unitPrice != null">unit_price,</if>
+            <if test="number != null">number,</if>
+            <if test="amount != null">amount,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="opportunitiesDetailId != null">#{opportunitiesDetailId},</if>
+            <if test="serialNumber != null">#{serialNumber},</if>
+            <if test="name != null">#{name},</if>
+            <if test="unit != null">#{unit},</if>
+            <if test="unitPrice != null">#{unitPrice},</if>
+            <if test="number != null">#{number},</if>
+            <if test="amount != null">#{amount},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateQuoteOpportunitiesOther" parameterType="QuoteOpportunitiesOther">
+        update quote_opportunities_other
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="opportunitiesDetailId != null">opportunities_detail_id = #{opportunitiesDetailId},</if>
+            <if test="serialNumber != null">serial_number = #{serialNumber},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="unit != null">unit = #{unit},</if>
+            <if test="unitPrice != null">unit_price = #{unitPrice},</if>
+            <if test="number != null">number = #{number},</if>
+            <if test="amount != null">amount = #{amount},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteQuoteOpportunitiesOtherById" parameterType="Long">
+        delete from quote_opportunities_other where id = #{id}
+    </delete>
+
+    <delete id="deleteQuoteOpportunitiesOtherByIds" parameterType="String">
+        delete from quote_opportunities_other where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

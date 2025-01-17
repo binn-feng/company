@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.internal.quote.mapper.QuoteOpportunitiesSelfMapper">
+    
+    <resultMap type="com.internal.quote.domain.QuoteOpportunitiesSelf" id="QuoteOpportunitiesSelfResult">
+        <result property="id"    column="id"    />
+        <result property="opportunitiesId"    column="opportunities_id"    />
+        <result property="opportunitiesDetailId"    column="opportunities_detail_id"    />
+        <result property="serialNumber"    column="serial_number"    />
+        <result property="name"    column="name"    />
+        <result property="unit"    column="unit"    />
+        <result property="unitPrice"    column="unit_price"    />
+        <result property="number"    column="number"    />
+        <result property="amount"    column="amount"    />
+        <result property="settingParam"    column="setting_param"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="hardwareId"    column="hardware_id"    />
+    </resultMap>
+
+    <sql id="selectQuoteOpportunitiesSelfVo">
+        select id,opportunities_id, opportunities_detail_id, serial_number, name, unit, unit_price, number, amount, setting_param, create_by, create_time, update_by, update_time, remark, hardware_id from quote_opportunities_self
+    </sql>
+
+    <select id="selectQuoteOpportunitiesSelfList" parameterType="com.internal.quote.domain.QuoteOpportunitiesSelf" resultMap="QuoteOpportunitiesSelfResult">
+        <include refid="selectQuoteOpportunitiesSelfVo"/>
+        <where>  
+            <if test="opportunitiesDetailId != null "> and opportunities_detail_id = #{opportunitiesDetailId}</if>
+            <if test="serialNumber != null  and serialNumber != ''"> and serial_number = #{serialNumber}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="unit != null  and unit != ''"> and unit = #{unit}</if>
+            <if test="unitPrice != null "> and unit_price = #{unitPrice}</if>
+            <if test="number != null "> and number = #{number}</if>
+            <if test="amount != null "> and amount = #{amount}</if>
+            <if test="settingParam != null  and settingParam != ''"> and setting_param = #{settingParam}</if>
+        </where>
+    </select>
+    
+    <select id="selectQuoteOpportunitiesSelfById" parameterType="Long" resultMap="QuoteOpportunitiesSelfResult">
+        <include refid="selectQuoteOpportunitiesSelfVo"/>
+        where id = #{id}
+    </select>
+
+    <delete id="deleteQuoteOpportunitiesSelfById" parameterType="Long">
+        delete from quote_opportunities_self where id = #{id}
+    </delete>
+
+    <delete id="deleteQuoteOpportunitiesSelfByIds" parameterType="String">
+        delete from quote_opportunities_self where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

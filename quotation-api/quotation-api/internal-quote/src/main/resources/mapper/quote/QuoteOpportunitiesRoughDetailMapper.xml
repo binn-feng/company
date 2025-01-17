@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.internal.quote.mapper.QuoteOpportunitiesRoughDetailMapper">
+    
+    <resultMap type="QuoteOpportunitiesRoughDetail" id="QuoteOpportunitiesRoughDetailResult">
+        <result property="id"    column="id"    />
+        <result property="opportunitiesId"    column="opportunities_id"    />
+        <result property="roughId"    column="rough_id"    />
+        <result property="supportDesc"    column="support_desc"    />
+        <result property="supportAmount"    column="support_amount"    />
+        <result property="customDesc"    column="custom_desc"    />
+        <result property="customAmount"    column="custom_amount"    />
+        <result property="productDesc"    column="product_desc"    />
+        <result property="productAmount"    column="product_amount"    />
+        <result property="selfDesc"    column="self_desc"    />
+        <result property="selfAmount"    column="self_amount"    />
+        <result property="externalDesc"    column="external_desc"    />
+        <result property="externalAmount"    column="external_amount"    />
+        <result property="implementDesc"    column="implement_desc"    />
+        <result property="implementAmount"    column="implement_amount"    />
+        <result property="otherDesc"    column="other_desc"    />
+        <result property="otherAmount"    column="other_amount"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectQuoteOpportunitiesRoughDetailVo">
+        select id, opportunities_id, rough_id, support_desc, support_amount, custom_desc, custom_amount, product_desc, product_amount, self_desc, self_amount, external_desc, external_amount, implement_desc, implement_amount, other_desc, other_amount, create_by, create_time, update_by, update_time, remark from quote_opportunities_rough_detail
+    </sql>
+
+    <select id="selectQuoteOpportunitiesRoughDetailList" parameterType="QuoteOpportunitiesRoughDetail" resultMap="QuoteOpportunitiesRoughDetailResult">
+        <include refid="selectQuoteOpportunitiesRoughDetailVo"/>
+        <where>  
+            <if test="opportunitiesId != null "> and opportunities_id = #{opportunitiesId}</if>
+            <if test="roughId != null "> and rough_id = #{roughId}</if>
+            <if test="supportDesc != null  and supportDesc != ''"> and support_desc = #{supportDesc}</if>
+            <if test="supportAmount != null "> and support_amount = #{supportAmount}</if>
+            <if test="customDesc != null  and customDesc != ''"> and custom_desc = #{customDesc}</if>
+            <if test="customAmount != null "> and custom_amount = #{customAmount}</if>
+            <if test="productDesc != null  and productDesc != ''"> and product_desc = #{productDesc}</if>
+            <if test="productAmount != null "> and product_amount = #{productAmount}</if>
+            <if test="selfDesc != null  and selfDesc != ''"> and self_desc = #{selfDesc}</if>
+            <if test="selfAmount != null "> and self_amount = #{selfAmount}</if>
+            <if test="externalDesc != null  and externalDesc != ''"> and external_desc = #{externalDesc}</if>
+            <if test="externalAmount != null "> and external_amount = #{externalAmount}</if>
+            <if test="implementDesc != null  and implementDesc != ''"> and implement_desc = #{implementDesc}</if>
+            <if test="implementAmount != null "> and implement_amount = #{implementAmount}</if>
+            <if test="otherDesc != null  and otherDesc != ''"> and other_desc = #{otherDesc}</if>
+            <if test="otherAmount != null "> and other_amount = #{otherAmount}</if>
+        </where>
+    </select>
+    
+    <select id="selectQuoteOpportunitiesRoughDetailById" parameterType="Long" resultMap="QuoteOpportunitiesRoughDetailResult">
+        <include refid="selectQuoteOpportunitiesRoughDetailVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertQuoteOpportunitiesRoughDetail" parameterType="QuoteOpportunitiesRoughDetail">
+        insert into quote_opportunities_rough_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="opportunitiesId != null">opportunities_id,</if>
+            <if test="roughId != null">rough_id,</if>
+            <if test="supportDesc != null">support_desc,</if>
+            <if test="supportAmount != null">support_amount,</if>
+            <if test="customDesc != null">custom_desc,</if>
+            <if test="customAmount != null">custom_amount,</if>
+            <if test="productDesc != null">product_desc,</if>
+            <if test="productAmount != null">product_amount,</if>
+            <if test="selfDesc != null">self_desc,</if>
+            <if test="selfAmount != null">self_amount,</if>
+            <if test="externalDesc != null">external_desc,</if>
+            <if test="externalAmount != null">external_amount,</if>
+            <if test="implementDesc != null">implement_desc,</if>
+            <if test="implementAmount != null">implement_amount,</if>
+            <if test="otherDesc != null">other_desc,</if>
+            <if test="otherAmount != null">other_amount,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="opportunitiesId != null">#{opportunitiesId},</if>
+            <if test="roughId != null">#{roughId},</if>
+            <if test="supportDesc != null">#{supportDesc},</if>
+            <if test="supportAmount != null">#{supportAmount},</if>
+            <if test="customDesc != null">#{customDesc},</if>
+            <if test="customAmount != null">#{customAmount},</if>
+            <if test="productDesc != null">#{productDesc},</if>
+            <if test="productAmount != null">#{productAmount},</if>
+            <if test="selfDesc != null">#{selfDesc},</if>
+            <if test="selfAmount != null">#{selfAmount},</if>
+            <if test="externalDesc != null">#{externalDesc},</if>
+            <if test="externalAmount != null">#{externalAmount},</if>
+            <if test="implementDesc != null">#{implementDesc},</if>
+            <if test="implementAmount != null">#{implementAmount},</if>
+            <if test="otherDesc != null">#{otherDesc},</if>
+            <if test="otherAmount != null">#{otherAmount},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateQuoteOpportunitiesRoughDetail" parameterType="QuoteOpportunitiesRoughDetail">
+        update quote_opportunities_rough_detail
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="opportunitiesId != null">opportunities_id = #{opportunitiesId},</if>
+            <if test="roughId != null">rough_id = #{roughId},</if>
+            <if test="supportDesc != null">support_desc = #{supportDesc},</if>
+            <if test="supportAmount != null">support_amount = #{supportAmount},</if>
+            <if test="customDesc != null">custom_desc = #{customDesc},</if>
+            <if test="customAmount != null">custom_amount = #{customAmount},</if>
+            <if test="productDesc != null">product_desc = #{productDesc},</if>
+            <if test="productAmount != null">product_amount = #{productAmount},</if>
+            <if test="selfDesc != null">self_desc = #{selfDesc},</if>
+            <if test="selfAmount != null">self_amount = #{selfAmount},</if>
+            <if test="externalDesc != null">external_desc = #{externalDesc},</if>
+            <if test="externalAmount != null">external_amount = #{externalAmount},</if>
+            <if test="implementDesc != null">implement_desc = #{implementDesc},</if>
+            <if test="implementAmount != null">implement_amount = #{implementAmount},</if>
+            <if test="otherDesc != null">other_desc = #{otherDesc},</if>
+            <if test="otherAmount != null">other_amount = #{otherAmount},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteQuoteOpportunitiesRoughDetailById" parameterType="Long">
+        delete from quote_opportunities_rough_detail where id = #{id}
+    </delete>
+
+    <delete id="deleteQuoteOpportunitiesRoughDetailByIds" parameterType="String">
+        delete from quote_opportunities_rough_detail where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

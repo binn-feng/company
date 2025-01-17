@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.internal.quote.mapper.QuoteSalesContractMapper">
+    
+    <resultMap type="QuoteSalesContract" id="QuoteSalesContractResult">
+        <result property="id"    column="id"    />
+        <result property="crmContractId"    column="crm_contract_id"    />
+        <result property="contractName"    column="contract_name"    />
+        <result property="contractNumber"    column="contract_number"    />
+        <result property="contractType"    column="contract_type"    />
+        <result property="contractAmount"    column="contract_amount"    />
+        <result property="signingDate"    column="signing_date"    />
+        <result property="customerName"    column="customer_name"    />
+        <result property="opportunitySubject"    column="opportunity_subject"    />
+        <result property="standardAmount"    column="standard_amount"    />
+        <result property="contractDiscount"    column="contract_discount"    />
+        <result property="receivedAmount"    column="received_amount"    />
+        <result property="accountsReceivable"    column="accounts_receivable"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectQuoteSalesContractVo">
+        select id, crm_contract_id, contract_name, contract_number, contract_type, contract_amount, signing_date, customer_name, opportunity_subject, standard_amount, contract_discount, received_amount, accounts_receivable, create_by, create_time, update_by, update_time, remark from quote_sales_contract
+    </sql>
+
+    <select id="selectQuoteSalesContractList" parameterType="QuoteSalesContract" resultMap="QuoteSalesContractResult">
+        <include refid="selectQuoteSalesContractVo"/>
+        <where>  
+            <if test="contractName != null  and contractName != ''"> and contract_name like concat('%', #{contractName}, '%')</if>
+            <if test="contractNumber != null  and contractNumber != ''"> and contract_number = #{contractNumber}</if>
+            <if test="contractType != null  and contractType != ''"> and contract_type = #{contractType}</if>
+            <if test="contractAmount != null "> and contract_amount = #{contractAmount}</if>
+            <if test="signingDate != null "> and signing_date = #{signingDate}</if>
+            <if test="customerName != null  and customerName != ''"> and customer_name like concat('%', #{customerName}, '%')</if>
+            <if test="opportunitySubject != null  and opportunitySubject != ''"> and opportunity_subject = #{opportunitySubject}</if>
+            <if test="standardAmount != null "> and standard_amount = #{standardAmount}</if>
+            <if test="contractDiscount != null "> and contract_discount = #{contractDiscount}</if>
+            <if test="receivedAmount != null "> and received_amount = #{receivedAmount}</if>
+            <if test="accountsReceivable != null "> and accounts_receivable = #{accountsReceivable}</if>
+        </where>
+    </select>
+    
+    <select id="selectQuoteSalesContractById" parameterType="Long" resultMap="QuoteSalesContractResult">
+        <include refid="selectQuoteSalesContractVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertQuoteSalesContract" parameterType="QuoteSalesContract">
+        insert into quote_sales_contract
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="contractName != null">contract_name,</if>
+            <if test="contractNumber != null and contractNumber != ''">contract_number,</if>
+            <if test="contractType != null">contract_type,</if>
+            <if test="contractAmount != null">contract_amount,</if>
+            <if test="signingDate != null">signing_date,</if>
+            <if test="customerName != null">customer_name,</if>
+            <if test="opportunitySubject != null">opportunity_subject,</if>
+            <if test="standardAmount != null">standard_amount,</if>
+            <if test="contractDiscount != null">contract_discount,</if>
+            <if test="receivedAmount != null">received_amount,</if>
+            <if test="accountsReceivable != null">accounts_receivable,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="contractName != null">#{contractName},</if>
+            <if test="contractNumber != null and contractNumber != ''">#{contractNumber},</if>
+            <if test="contractType != null">#{contractType},</if>
+            <if test="contractAmount != null">#{contractAmount},</if>
+            <if test="signingDate != null">#{signingDate},</if>
+            <if test="customerName != null">#{customerName},</if>
+            <if test="opportunitySubject != null">#{opportunitySubject},</if>
+            <if test="standardAmount != null">#{standardAmount},</if>
+            <if test="contractDiscount != null">#{contractDiscount},</if>
+            <if test="receivedAmount != null">#{receivedAmount},</if>
+            <if test="accountsReceivable != null">#{accountsReceivable},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateQuoteSalesContract" parameterType="QuoteSalesContract">
+        update quote_sales_contract
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="contractName != null">contract_name = #{contractName},</if>
+            <if test="contractNumber != null and contractNumber != ''">contract_number = #{contractNumber},</if>
+            <if test="contractType != null">contract_type = #{contractType},</if>
+            <if test="contractAmount != null">contract_amount = #{contractAmount},</if>
+            <if test="signingDate != null">signing_date = #{signingDate},</if>
+            <if test="customerName != null">customer_name = #{customerName},</if>
+            <if test="opportunitySubject != null">opportunity_subject = #{opportunitySubject},</if>
+            <if test="standardAmount != null">standard_amount = #{standardAmount},</if>
+            <if test="contractDiscount != null">contract_discount = #{contractDiscount},</if>
+            <if test="receivedAmount != null">received_amount = #{receivedAmount},</if>
+            <if test="accountsReceivable != null">accounts_receivable = #{accountsReceivable},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteQuoteSalesContractById" parameterType="Long">
+        delete from quote_sales_contract where id = #{id}
+    </delete>
+
+    <delete id="deleteQuoteSalesContractByIds" parameterType="String">
+        delete from quote_sales_contract where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
